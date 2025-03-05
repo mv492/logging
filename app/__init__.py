@@ -8,14 +8,14 @@ import logging
 import logging.config
 
 class App:
-    def __init__(self):
+    def __init__(self): # Constructor
         os.makedirs('logs', exist_ok=True)
         self.configure_logging()
         load_dotenv()
         self.settings = self.load_environment_variables()
         self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
         self.command_handler = CommandHandler()
-
+    
     def configure_logging(self):
         logging_conf_path = 'logging.conf'
         if os.path.exists(logging_conf_path):
@@ -53,10 +53,11 @@ class App:
                 # Command names are now explicitly set to the plugin's folder name
                 self.command_handler.register_command(plugin_name, item())
                 logging.info(f"Command '{plugin_name}' from plugin '{plugin_name}' registered.")
-
+    
     def start(self):
+        # Register commands here
         self.load_plugins()
-        logging.info("Application started. Type 'exit' to exit.")
+        logging.info("Application started. Type 'menu' to get commands or 'exit' to exit the program.")
         try:
             while True:
                 cmd_input = input(">>> ").strip()
@@ -73,7 +74,6 @@ class App:
             sys.exit(0)  # Assuming a KeyboardInterrupt should also result in a clean exit.
         finally:
             logging.info("Application shutdown.")
-
 
 if __name__ == "__main__":
     app = App()
